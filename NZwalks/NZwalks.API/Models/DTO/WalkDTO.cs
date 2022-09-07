@@ -1,6 +1,8 @@
-﻿namespace NZWalks.API.Models.Domain
+﻿using NZWalks.API.Models.Domain;
+
+namespace NZwalks.API.Models.DTO
 {
-    public class Walk
+    public class WalkDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -11,8 +13,6 @@
         //Navigation properties
 
         public DomainRegion Region { get; set; }
-        public WalkDifficulty WalkDifficulty { get; set; }
-
-        //Now install Entity Framework Core Nugget Packages
+        public WalkDifficultyDTO WalkDifficultyDTO { get; set; }
     }
 }

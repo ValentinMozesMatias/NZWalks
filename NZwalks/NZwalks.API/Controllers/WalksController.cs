@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NZwalks.API.Models.DTO;
 using NZwalks.API.Repositories;
 
 namespace NZwalks.API.Controllers
@@ -117,6 +118,33 @@ namespace NZwalks.API.Controllers
                 //Return ok response
                 return Ok(walkDTO);
             }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteWalkAsync(Guid id)
+        {
+
+            //Get walk from database and assign a delete await once received the id
+            var walk = await walkRepository.DeleteAsync(id);
+
+            //if search result is null then return not Found
+            if (walk == null)
+            {
+                return NotFound();
+            }
+
+            //convert response to DTO if we received the walk
+            var walkDTO = new Models.DTO.WalkDTO
+            {
+                Name = walk.Name,
+                Length = walk.Length,
+                RegionId = walk.RegionId,
+                WalkDifficultyId = walk.WalkDifficultyId
+            };
+
+
+            //create ok response
+            return Ok();
         }
     }
 }

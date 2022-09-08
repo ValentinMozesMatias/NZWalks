@@ -59,5 +59,23 @@ namespace NZwalks.API.Repositories
             return null;
             
         }
+
+        public async Task<Walk>DeleteAsync(Guid id)
+        {
+            var walk = await NZWalksDbContext.Walks.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (walk == null) return null;
+
+            //Delete
+            
+            NZWalksDbContext.Walks.Remove(walk);
+            await NZWalksDbContext.SaveChangesAsync();
+
+            return walk;
+
+        }
+
     }
+
+
 }

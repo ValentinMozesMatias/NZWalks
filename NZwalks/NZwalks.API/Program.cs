@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using NZwalks.API.Repositories;
 using NZWalks.API.Data;
@@ -15,6 +16,8 @@ builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNa
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddFluentValidation(option => option.RegisterValidatorsFromAssemblyContaining<Program>());
 builder.Services.AddDbContext<LocalTestDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalks"));

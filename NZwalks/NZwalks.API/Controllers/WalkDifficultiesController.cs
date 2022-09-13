@@ -58,6 +58,15 @@ namespace NZwalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalkDifficultyAsync(Models.DTO.AddWalkDifficultyRequest addWalkDifficultyRequest)
         {
+
+            //Validating incoming requests
+            if (!ValidateAddWalkDifficultyAsync(addWalkDifficultyRequest))
+            {
+                return BadRequest(ModelState);
+            }
+
+        ValidateAddWalkDifficultyAsync(addWalkDifficultyRequest);
+
             var newWalkDifficulty = new NZWalks.API.Models.Domain.WalkDifficulty
             {
                 Code = addWalkDifficultyRequest.Code
@@ -81,6 +90,13 @@ namespace NZwalks.API.Controllers
         public async Task<IActionResult> UpdateWalkDifficultyAsync([FromRoute] Guid id, 
             [FromBody]Models.DTO.UpdateWalkDifficultyRequest updateWalkDifficultyRequest)
         {
+
+            //Validate UpdateWalkDifficulties
+            if (!ValidateUpdateWalkDifficultiesAsync(updateWalkDifficultyRequest))
+            {
+                return BadRequest(ModelState);
+            }
+
             //Convert DTO to Domain object
             var walkDifficultyDomain = new NZWalks.API.Models.Domain.WalkDifficulty 
                 {
@@ -122,5 +138,48 @@ namespace NZwalks.API.Controllers
             return Ok();
             
         }
+
+        // nu inteleg de ce aici s-a pus in # in fata cuvantului
+        #region
+
+        private bool ValidateAddWalkDifficultyAsync(NZwalks.API.Models.DTO.AddWalkDifficultyRequest addWalkDifficultyRequest)
+        {
+            if (addWalkDifficultyRequest == null)
+            {
+                ModelState.AddModelError(nameof(addWalkDifficultyRequest), $"{nameof(addWalkDifficultyRequest)}, is required.");
+                return false;
+            }
+            
+
+            if (string.IsNullOrWhiteSpace(addWalkDifficultyRequest.Code))
+            {
+                ModelState.AddModelError(nameof(addWalkDifficultyRequest.Code), $"{nameof(addWalkDifficultyRequest.Code)} it can't be null.");
+   
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateUpdateWalkDifficultiesAsync(NZwalks.API.Models.DTO.UpdateWalkDifficultyRequest updateWalkDifficultyRequest)
+        {
+            if (updateWalkDifficultyRequest == null)
+            {
+                ModelState.AddModelError(nameof(updateWalkDifficultyRequest), $"{nameof(updateWalkDifficultyRequest)} is required.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(updateWalkDifficultyRequest.Code))
+            {
+                ModelState.AddModelError(nameof(updateWalkDifficultyRequest.Code), $"{nameof(updateWalkDifficultyRequest.Code)} cannot be null or empty. ");
+            return false;
+            }
+            return true;
+        }
+        #endregion
     }
 }

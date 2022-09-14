@@ -6,7 +6,8 @@ using NZWalks.API.Models.Domain;
 namespace NZwalks.API.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("[controller]")]
+
     public class WalkDifficultiesController : Controller
     {
 

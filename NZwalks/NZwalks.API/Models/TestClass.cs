@@ -38,21 +38,27 @@
     public class Execution 
     {
         //Intantiaza 3 clase cu cei 3 constructori // am mai adaugat un cunstructor.
+        //Creeaza o interpolare cu clasele instantiate
         public void Calculate()
         {
             var test = new TestClass();
             var test1 = new TestClass(1);
-
-            test1.Id  = 1;
-
-            var test2 = new TestClass();
-
-            test2.Id = 2;
-            test2.Running = "LongRun";
-            test2.KmRunned = 10;
-
+            var test2 = new TestClass(2, "MountainRun", 20);
             var test3 = new TestClass(4, "LongBeach", 10, 120);
+
+            if (test.KmRunned >= 100)
+            {
+                Console.WriteLine($"Alexandru ran {test3.Running} which has a length of {test3.KmRunned} KM");
+            }
+
+            else
+            {
+                Console.WriteLine($"Alexandru has to train more and run on {test2.Running} track which has a lenght of {test2.KmRunned} KM");
+            }
         }
+
+        
+        
 
     }
 

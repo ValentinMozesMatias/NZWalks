@@ -27,6 +27,7 @@ namespace NZWalks.API.Data
         public DbSet<DomainRegion> Regions { get; set; }
         public DbSet<Walk> Walks { get; set; }
         public DbSet<WalkDifficulty> WalkDifficulty { get; set; }
+        public DbSet<DataMembers> DataMembers { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

@@ -24,7 +24,7 @@ namespace NZwalks.API.Controllers
 
         //we create a new method which is decorated with HTTPGet attribute
         [HttpGet]
-        [Authorize(Roles = "reader")]
+        //[Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllRegionsAsync()
         {
             var regions = await regionRepository.GetAllAsync();
@@ -57,6 +57,7 @@ namespace NZwalks.API.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Roles = "reader")]
 
         //ASP.Net allows us to use collon and mention an id that 
         //takes for example only guid values only;
@@ -77,7 +78,8 @@ namespace NZwalks.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "writer")]
+        //[Authorize(Roles = "reader")]
+        //[Authorize(Roles = "writer")]
         //[ActionName(nameof(GetAllRegionsAsync))]
         public async Task<IActionResult> AddRegionAsync(Models.DTO.AddRegionRequest addRegionRequest)
         {
@@ -117,7 +119,7 @@ namespace NZwalks.API.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "writer")]
+        //[Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteRegionAcync(Guid id)
         {
             //get region from Database
@@ -147,7 +149,7 @@ namespace NZwalks.API.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        [Authorize(Roles = "writer")]
+        //[Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateRegionAsync([FromRoute]Guid id, [FromBody]Models.DTO.UpdateRegionRequest updateRegionRequest)
         {
 

@@ -1,29 +1,31 @@
-﻿using NZwalks.API.Models.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using NZwalks.API.Models.Domain;
+using NZWalks.API.Data;
 
 namespace NZwalks.API.Repositories
 {
     public class StaticUserRepository : IUserRepository
     {
-        private List<User> Users = new List<User>()
+        private readonly LocalTestDbContext _dbContext;
+        public StaticUserRepository(LocalTestDbContext dbContext)
         {
-            new User()
-            {
-                FirstName = "Read Only", LastName = "User", EmailAdress = "readonly@user.com", id = Guid.NewGuid(),
-                Username = "readonly@user.com", Password = "12345", Roles = new List<string> {"reader", "writer"}
-            },
+            _dbContext = dbContext;
+        }
 
-            new User()
-            {
-                FirstName = "Read Write", LastName = "User", EmailAdress = "readwrite@user.com", id = Guid.NewGuid(),
-                Username = "readwrite@user.com", Password = "12345", Roles = new List<string> {"reader", "writer"}
-            }
-        };
+        //Here is does not accept a bool; can't implement IUserRepository if there is not a matching Task of type<User>
         public async Task<User> AuthenticateAsync(string username, string password)
         {
-            var user = Users.Find(x => x.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase) 
-            && x.Password == password);
 
-            return user;
+            var user = await _dbContext.Users
+                .Where(x => x.Username == username && x.Password == password)
+                .FirstOrDefaultAsync();
+               
+
+            if (user != null)
+            {
+                return user;
+            }
+            return null;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace NZwalks.API.Models.Domain
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NZwalks.API.Models.Domain
 {
     public class Role
     {
@@ -7,6 +9,6 @@
 
         //Navigation
 
-        public List<User_Role> UserRoles{ get; set; }
+        //public List<User_Role> UserRoles{ get; set; }
     }
 }

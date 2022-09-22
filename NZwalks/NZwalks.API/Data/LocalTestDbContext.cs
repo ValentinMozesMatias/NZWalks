@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NZwalks.API.Models.Domain;
 using NZWalks.API.Models.Domain;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NZWalks.API.Data
 {
@@ -10,27 +12,33 @@ namespace NZWalks.API.Data
         {
             
     }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User_Role>()
-                .HasOne(x => x.Role)
-                .WithMany(x => x.UserRoles)
-                .HasForeignKey(x => x.RoleId);
 
-            modelBuilder.Entity<User_Role>()
-                .HasOne(x => x.User)
-                .WithMany(x => x.UserRoles)
-                .HasForeignKey(x => x.UserId);
+            //modelBuilder.Entity<User_Role>()
+            //    .HasOne(x => x.Role)
+            //    //.WithMany(x => x.UserRoles)
+            //    .HasForeignKey(x => x.RoleId);
+
+
+            //modelBuilder.Entity<User_Role>()
+            //    .HasOne(x => x.User)
+            //   // .WithMany(x => x.UserRoles)
+            //    .HasForeignKey(x => x.UserId);
+
         }
 
 
         public DbSet<DomainRegion> Regions { get; set; }
         public DbSet<Walk> Walks { get; set; }
         public DbSet<WalkDifficulty> WalkDifficulty { get; set; }
+
         public DbSet<DataMembers> DataMembers { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+
         public DbSet<User_Role> User_Roles { get; set; }
     }
 }

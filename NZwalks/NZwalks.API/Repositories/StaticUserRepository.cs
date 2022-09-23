@@ -1,27 +1,21 @@
-﻿using NZwalks.API.Models.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using NZwalks.API.Models.Domain;
+using NZWalks.API.Data;
 
 namespace NZwalks.API.Repositories
 {
     public class StaticUserRepository : IUserRepository
     {
-        private List<User> Users = new List<User>()
-        {
-            new User()
-            {
-                FirstName = "Read Only", LastName = "User", EmailAdress = "readonly@user.com", id = Guid.NewGuid(),
-                Username = "readonly@user.com", Password = "12345", Roles = new List<string> {"reader", "writer"}
-            },
+        private readonly LocalTestDbContext _dbContext;
 
-            new User()
-            {
-                FirstName = "Read Write", LastName = "User", EmailAdress = "readwrite@user.com", id = Guid.NewGuid(),
-                Username = "readwrite@user.com", Password = "12345", Roles = new List<string> {"reader", "writer"}
-            }
-        };
+        public StaticUserRepository(LocalTestDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public async Task<User> AuthenticateAsync(string username, string password)
         {
-            var user = Users.Find(x => x.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase) 
-            && x.Password == password);
+            var user = await _dbContext.Users.Where(x => x.Username == username && x.Password == password).FirstOrDefaultAsync();
 
             return user;
         }

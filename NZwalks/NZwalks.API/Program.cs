@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NZwalks.API;
 using NZwalks.API.Repositories;
 using NZWalks.API.Data;
 using System.Text;
@@ -55,10 +56,11 @@ builder.Services.AddDbContext<LocalTestDbContext>(options =>
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
 builder.Services.AddScoped<IWalkDifficultyRepository, WalkDifficultyRepository>();
-builder.Services.AddSingleton<IUserRepository, StaticUserRepository>();
+builder.Services.AddScoped<IUserRepository, StaticUserRepository>();
 builder.Services.AddScoped<ITokenHandler, NZwalks.API.Repositories.TokenHandler>();
+builder.Services.AddScoped<IMembersDataRepository, MembersDataRepository>();
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
     {

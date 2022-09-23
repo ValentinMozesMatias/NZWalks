@@ -32,15 +32,15 @@ namespace NZwalks.API.Repositories
                 return null;
             }
 
-             nZWalksDbContext.WalkDifficulty.Remove(deleteWalkDifficulty);
-             await nZWalksDbContext.SaveChangesAsync();
+            nZWalksDbContext.WalkDifficulty.Remove(deleteWalkDifficulty);
+            await nZWalksDbContext.SaveChangesAsync();
 
-             return deleteWalkDifficulty;
-            
+            return deleteWalkDifficulty;
+
 
         }
 
-        public async Task<IEnumerable<WalkDifficulty>>GetAllAsync()
+        public async Task<IEnumerable<WalkDifficulty>> GetAllAsync()
         {
             return await nZWalksDbContext.WalkDifficulty.ToListAsync();
         }
@@ -63,9 +63,8 @@ namespace NZwalks.API.Repositories
                 await nZWalksDbContext.SaveChangesAsync();
                 return existingWalkDifficulty;
             }
-    }
+        }
 
     }
-
     
 }

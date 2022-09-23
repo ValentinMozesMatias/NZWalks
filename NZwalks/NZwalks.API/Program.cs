@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NZwalks.API;
-using NZwalks.API.Models.DTO;
 using NZwalks.API.Repositories;
 using NZWalks.API.Data;
 using System.Text;
@@ -18,9 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true);
 //builder.Configuration.AddEnvironmentVariables();
 
-//builder.Services.AddControllers()
-//        .AddJsonOptions(options =>
-//                options.JsonSerializerOptions.Converters.Add(new IntToStringConverter()));
 builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -56,12 +52,6 @@ builder.Services.AddDbContext<LocalTestDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalks"));
 
 });
-//builder.Services.AddDbContext<LocalBankAccDbContext>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("Bankacc"));
-
-//});
-
 
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepository>();
@@ -70,7 +60,6 @@ builder.Services.AddScoped<IUserRepository, StaticUserRepository>();
 builder.Services.AddScoped<ITokenHandler, NZwalks.API.Repositories.TokenHandler>();
 builder.Services.AddScoped<IMembersDataRepository, MembersDataRepository>();
 
-//builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters

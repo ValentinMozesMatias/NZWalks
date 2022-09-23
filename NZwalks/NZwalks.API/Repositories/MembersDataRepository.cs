@@ -8,32 +8,29 @@ namespace NZwalks.API.Repositories
 {
     public class MembersDataRepository : IMembersDataRepository
     {
-        private readonly DataMembers assignvaluerequest;
+        private readonly LocalTestDbContext _dbContext;
 
-
-        public MembersDataRepository(LocalTestDbContext nZWalksDbContext)
+        public MembersDataRepository(LocalTestDbContext dbContext)
         {
-            this.NZWalksDbContext = nZWalksDbContext;
+            _dbContext = dbContext;
         }
-
-        public LocalTestDbContext NZWalksDbContext { get; set; }
 
         public async Task<List<DataMembers>> GetAllAsync()
         {
 
-            return await NZWalksDbContext.DataMembers.ToListAsync();
+            return await _dbContext.DataMembers.ToListAsync();
         }
 
         public async Task<DataMembers> GetAllAsync(Guid id)
         {
-            return await NZWalksDbContext.DataMembers.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.DataMembers.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<DataMembers> AddSync(DataMembers assignValuesRequest)
         {
 
-            await NZWalksDbContext.AddAsync(assignValuesRequest);
-            await NZWalksDbContext.SaveChangesAsync();
+            await _dbContext.AddAsync(assignValuesRequest);
+            await _dbContext.SaveChangesAsync();
             return (assignValuesRequest);
 
         }
@@ -41,14 +38,14 @@ namespace NZwalks.API.Repositories
         public async Task<DataMembers> AddAsync(DataMembers dataMembers)
         {
             //Aici a mai adaut o schimbare
-            await NZWalksDbContext.DataMembers.AddAsync(dataMembers);
-            await NZWalksDbContext.SaveChangesAsync();
+            await _dbContext.DataMembers.AddAsync(dataMembers);
+            await _dbContext.SaveChangesAsync();
             return (dataMembers);
         }
 
         public async Task<DataMembers> UpdateAsync(Guid id, DataMembers dataMembers)
         {
-            var existingDataMembers = await NZWalksDbContext.DataMembers.FirstOrDefaultAsync(x => x.Id == id);
+            var existingDataMembers = await _dbContext.DataMembers.FirstOrDefaultAsync(x => x.Id == id);
 
 
             //Here instead of null just place bad request message;
@@ -60,8 +57,58 @@ namespace NZwalks.API.Repositories
             existingDataMembers.NameOfDepositor = dataMembers.NameOfDepositor;
             existingDataMembers.AccBalance = dataMembers.AccBalance;
 
-            await NZWalksDbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return(existingDataMembers);
+        }
+
+        public async Task<DataMembers> WidthdrawDataMemberRequestAsync(Guid id, int amount)
+        {
+            var existingDataMembers = await _dbContext.DataMembers.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existingDataMembers == null)
+            {
+                throw new ArgumentException("The id entered is incorrect");
+            }
+            var initialBalance = existingDataMembers.AccBalance;
+
+            if (initialBalance <= 0)
+            {
+                throw new ArgumentOutOfRangeException("The initial balance value must be higher than 0");
+            }
+            if (amount <= 0 || amount > initialBalance)
+            {
+                throw new ArgumentException("The amount inserted is inccorect");
+            }
+            initialBalance -= amount;
+
+            existingDataMembers.AccBalance = initialBalance;
+            _dbContext.DataMembers.Update(existingDataMembers);
+            await _dbContext.SaveChangesAsync();
+
+            return existingDataMembers;
+        }
+
+        public async Task<DataMembers> DepositDataMemberRequestAsync(Guid id, int amount)
+        {
+            var existingDataMembers = await _dbContext.DataMembers.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existingDataMembers == null)
+            {
+                throw new ArgumentException("The id entered is incorrect");
+            }
+            var initialBalance = existingDataMembers.AccBalance;
+
+            if (amount <= 0)
+            {
+                throw new ArgumentException("The amount inserted is inccorect");
+            }
+            initialBalance += amount;
+
+            existingDataMembers.AccBalance = initialBalance;
+            _dbContext.DataMembers.Update(existingDataMembers);
+            await _dbContext.SaveChangesAsync();
+
+            return existingDataMembers;
         }
     }
 }

@@ -22,28 +22,7 @@ namespace NZwalks.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("NZwalks.API.Models.Domain.DataMembers", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AccBalance")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NameOfDepositor")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)")
-                        .HasColumnName("Account Number")
-                        .HasColumnOrder(2);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DataMembers");
-                });
-
-            modelBuilder.Entity("NZWalks.API.Models.Domain.DomainRegion", b =>
+            modelBuilder.Entity("NZWalks.API.Models.Domain.Region", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,73 +51,6 @@ namespace NZwalks.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Regions");
-                });
-
-            modelBuilder.Entity("NZwalks.API.Models.Domain.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("NZwalks.API.Models.Domain.User", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EmailAdress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("NZwalks.API.Models.Domain.User_Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("User_Roles");
                 });
 
             modelBuilder.Entity("NZWalks.API.Models.Domain.Walk", b =>
@@ -184,28 +96,9 @@ namespace NZwalks.API.Migrations
                     b.ToTable("WalkDifficulty");
                 });
 
-            modelBuilder.Entity("NZwalks.API.Models.Domain.User_Role", b =>
-                {
-                    b.HasOne("NZwalks.API.Models.Domain.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NZwalks.API.Models.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NZWalks.API.Models.Domain.Walk", b =>
                 {
-                    b.HasOne("NZWalks.API.Models.Domain.DomainRegion", "Region")
+                    b.HasOne("NZWalks.API.Models.Domain.Region", "Region")
                         .WithMany("Walks")
                         .HasForeignKey("RegionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -222,7 +115,7 @@ namespace NZwalks.API.Migrations
                     b.Navigation("WalkDifficulty");
                 });
 
-            modelBuilder.Entity("NZWalks.API.Models.Domain.DomainRegion", b =>
+            modelBuilder.Entity("NZWalks.API.Models.Domain.Region", b =>
                 {
                     b.Navigation("Walks");
                 });

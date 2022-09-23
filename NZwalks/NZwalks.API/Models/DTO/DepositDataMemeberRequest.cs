@@ -2,7 +2,7 @@
 
 namespace NZwalks.API.Models.DTO
 {
-    public class WidthdrawDataMemberRequest
+    public class DepositDataMemeberRequest
     {
         [Required]
         [MaxLength(60)]

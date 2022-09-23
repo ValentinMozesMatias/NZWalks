@@ -82,6 +82,25 @@ namespace NZwalks.API.Controllers
             return Ok(memberDataDTO);
         }
 
+        [HttpPost]
+        [Route("widthdraw/{id:Guid}")]
+        public async Task<IActionResult>WidthdrawDataMemberRequestAsync([FromRoute]Guid id, int amount)
+        {
+            var widthdraw = await membersDataRepository.WidthdrawDataMemberRequestAsync(id, amount);
+
+            return Ok(widthdraw);
+        }
+
+
+        [HttpPost]
+        [Route("deposit/{id:Guid}")]
+        public async Task<IActionResult> DepositDataMemberRequestAsync([FromRoute] Guid id, int amount)
+        {
+            var deposit = await membersDataRepository.DepositDataMemberRequestAsync(id, amount);
+
+            return Ok(deposit);
+        }
+
         [HttpGet]
         //[Authorize(Roles = "reader")]
         public async Task<IActionResult> GetMembersDataAsync()
